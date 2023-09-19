@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+  <style media="screen">
+      *,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #080710;
+}
+.background{
+    width: 430px;
+    height: 520px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+}
+.background .shape{
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    border-radius: 50%;
+    color: white;
+}
+.shape:first-child{
+    background: linear-gradient(
+        #1845ad,
+        #23a2f6
+    );
+    left: -80px;
+    top: -80px;
+}
+.shape:last-child{
+    background: linear-gradient(
+        to right,
+        #ff512f,
+        #f09819
+    );
+    right: -990px;
+    bottom: -980px;
+}
+form{
+    height: 520px;
+    width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+}
+form *{
+    font-family: 'Poppins',sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+form h3{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+
+    padding: 10px 10px;
+    margin-top: 30px;
+    font-size: 14px;
+    font-weight: 300;
+}
+::placeholder{
+    color: #e5e5e5;
+}
+button{
+    margin-top: 50px;
+    
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.social{
+  margin-top: 30px;
+  display: flex;
+}
+.social div{
+  background: red;
+  width: 150px;
+  border-radius: 3px;
+  padding: 5px 10px 10px 5px;
+  background-color: rgba(255,255,255,0.27);
+  color: #eaf0fb;
+  text-align: center;
+}
+.social div:hover{
+  background-color: rgba(255,255,255,0.47);
+}
+.social .fb{
+  margin-left: 25px;
+}
+.social i{
+  margin-right: 4px;
+}
+#signup
+{
+  margin-top: 90px;
+  position: absolute;
+  transform: translate(-50%,-50%);
+    left: 50%;
+    top: 65%;
+    width: 77%;
+    height: 12%;
+}
+  </style>
+</head>
+<body>
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+
+<form>
+    <h3>Login Here</h3>
+    <form id="login-form">
+      <input type="text" placeholder="Username" id="username-input">
+      <input type="password" placeholder="Password" id="password-input">
+      <button type="submit" id="login-btn">Login</button>
+    </form>
+  <button onclick="location.href='/new_user.html'" id="signup">Sign Up</button>
+  <script>
+    // chnaging the type of the input in password  to show the password in text form 
+    const loginBtn = document.getElementById("login-btn");
+    const usernameInput = document.getElementById('username-input');
+    const passwordInput = document.getElementById('password-input');
+    // login button to send the code to the server 
+    loginBtn.addEventListener('click', async (event) => {
+      event.preventDefault(); // to prevent reload to of the page
+      console.log("login  click")//to check if code is working 
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      const response = await fetch('/api/login', {
+        method: 'POST', // use to submit the data on server 
+        headers: {
+          'Content-Type': 'application/json' // type of contain we want to send to the server
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json(); // get the respone in of data in js form 
+
+      if (response.ok) {
+        // Save JWT token to local storage
+        localStorage.setItem('token', data.token); // if response is ok then it save the data to token in local stroage 
+        
+        // Redirect to dashboard
+        window.location.href = '/dashboard.html'; // then navigate to the dashboard.html
+      } else {
+        // Display error message
+        alert(data.message); // else show the message (error message )
+      }
+    });
+  </script>
+</body>
+</html>

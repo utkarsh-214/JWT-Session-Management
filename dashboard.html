@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body onload="loadDashboardContent()">
+    <h1>Welcome to the dashboard!</h1>
+    <div id="dashboard-content"></div>
+    <script>
+      // Retrieve the dashboard content from the server using AJAX
+      function loadDashboardContent() {
+  fetch("/dashboard", {
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+
+    // If the data is an array, display all users' data
+    if (Array.isArray(data)) {
+      var dashboardContent = "<h2>All Users:</h2><ul>";
+      data.forEach(user => {
+        dashboardContent += "<li>Name: " + user.name + ", Email: " + user.email + "</li>";
+      });
+      dashboardContent += "</ul>";
+    } else { // Otherwise, display the logged-in user's data
+      var dashboardContent = "<h2>Your Profile:</h2><ul><li>Name: " + data.name + "<br></li><li>Email: " + data.email + "</li></ul>";
+    }
+
+    document.getElementById("dashboard-content").innerHTML = dashboardContent;
+  })
+  .catch(error => {
+    console.error(error);
+  });
+}
+
+    </script>
+  </body>
+</html>
