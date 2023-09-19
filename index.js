@@ -130,5 +130,5 @@ app.get("/dashboard", authenticateToken, async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server is running:");
+  console.log("Server is running: PORT 3000");
 });
